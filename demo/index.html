@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset='utf-8'>
+    <title>Seisplotjs Demo (UW 2022)</title>
+    <link href="../bass.css" rel="stylesheet"/>
+    <link href="../split.css" rel="stylesheet"/>
+    <link href="../prism.css" rel="stylesheet"/>
+    <link href="style.css" rel="stylesheet"/>
+    <script type="module" src="./navbar.mjs"></script>
+  </head>
+  <body>
+    <div class="flex">
+      <div id="split-left" class="overflow-auto fs0 height-viewport-100">
+        <div class="py1 px2">
+          <div id="toc">
+            <nav is="demo-nav"></nav>
+          </div>
+        </div>
+      </div>
+      <div id="split-right" class="relative overflow-auto height-viewport-100">
+        <section class="p2 mb2 clearfix bg-white minishadow">
+          <div class="clearfix">
+            <h3>Seismograph</h3>
+            <div>
+            <sp-seismograph></sp-seismograph>
+            </div>
+            <pre><code class="language-css">
+                sp-seismograph {
+                  height: 300px;
+                  width: 1000px;
+                }
+            </code></pre>
+            <pre><code class="language-html">
+              &lt;sp-seismograph>&lt;/sp-seismograph>
+            </code></pre>
+          </div>
+        </section>
+      </div>
+    </div>
+    <script type="module" >
+      import * as seisplotjs from '../seisplotjs_3.0.0-alpha.1_standalone.mjs';
+      let graph = document.querySelector('sp-seismograph');
+      let queryTimeWindow = new seisplotjs.util.startEnd('2019-07-01', '2019-07-31');
+      let eventQuery = new seisplotjs.fdsnevent.EventQuery()
+        .timeWindow(queryTimeWindow)
+        .minMag(7)
+        .latitude(35).longitude(-118)
+        .maxRadius(3);
+      let stationQuery = new seisplotjs.fdsnstation.StationQuery()
+        .networkCode('CO')
+        .stationCode('HODGE')
+        .locationCode('00')
+        .channelCode('LHZ')
+        .timeWindow(queryTimeWindow);
+      // snip start promise
+      let loader = new seisplotjs.seismogramloader.SeismogramLoader(stationQuery, eventQuery);
+      loader.startOffset = -300;
+      loader.endOffset = 1200;
+      loader.markedPhaseList = "PcP,SS";
+      // let loaderSDDList = loader.loadSeismograms();
+      // loaderSDDList.then( seismogramDataList => {
+      //   graph.seisData = seismogramDataList;
+      //   graph.draw();
+      // });
+    </script>
+    <script src="../prism.js">
+    </script>
+    <script>
+     Prism.plugins.NormalizeWhitespace.setDefaults({
+          "remove-trailing": true,
+          "remove-indent": true,
+          "left-trim": true,
+          "right-trim": true
+        });
+    </script>
+  </body>
+</html>

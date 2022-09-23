@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <title>
+   Seisplotjs Demo (UW 2022)
+  </title>
+  <link href="../bass.css" rel="stylesheet"/>
+  <link href="../split.css" rel="stylesheet"/>
+  <link href="../prism.css" rel="stylesheet"/>
+  <link href="style.css" rel="stylesheet"/>
+  <style>
+   sp-seismograph {
+        height: 300px;
+        width: 1000px;
+      }
+  </style>
+  <script src="./navbar.mjs" type="module">
+  </script>
+ </head>
+ <body>
+  <div class="flex">
+   <div class="overflow-auto fs0 height-viewport-100" id="split-left">
+    <div class="py1 px2">
+     <div id="toc">
+      <nav is="demo-nav">
+      </nav>
+     </div>
+    </div>
+   </div>
+   <div class="relative overflow-auto height-viewport-100" id="split-right">
+    <section class="p2 mb2 clearfix bg-white minishadow">
+     <div class="clearfix">
+      <h3>
+       Seismograph
+      </h3>
+      <div>
+       <sp-seismograph>
+       </sp-seismograph>
+      </div>
+      <pre><code class="language-css">
+                sp-seismograph {
+                  height: 300px;
+                  width: 1000px;
+                }
+            </code></pre>
+      <pre><code class="language-html">
+              &lt;sp-seismograph&gt;&lt;/sp-seismograph&gt;
+            </code></pre>
+      <pre><code class="language-html">
+              &lt;script type="module" &gt;
+            </code></pre>
+      <pre><code class="language-javascript" snippet="import">
+import * as seisplotjs from '../seisplotjs_3.0.0-alpha.1_standalone.mjs';
+</code></pre>
+      <pre><code class="language-javascript" snippet="setup">
+let queryTimeWindow = new seisplotjs.util.startEnd('2019-07-01', '2019-07-31');
+let eventQuery = new seisplotjs.fdsnevent.EventQuery()
+  .timeWindow(queryTimeWindow)
+  .minMag(7)
+  .latLonRegion(new seisplotjs.fdsncommon.LatLonRadius(35, -118, 0, 3));
+let stationQuery = new seisplotjs.fdsnstation.StationQuery()
+  .nslcCodes(new seisplotjs.fdsnsourceid.NslcId('CO', 'HODGE', '00', 'LHZ'))
+  .timeWindow(queryTimeWindow);
+if (stationQuery.getNetworkCode() !== 'CO') {
+  console.log(`not CO: ${stationQuery.getNetworkCode()}`)
+}
+let loader = new seisplotjs.seismogramloader.SeismogramLoader(stationQuery, eventQuery);
+loader.startOffsetSeconds(-300);
+loader.endOffsetSeconds(1200);
+loader.markedPhaseList = "PcP,SS";
+</code></pre>
+      <pre><code class="language-javascript" snippet="promise">
+loader.loadSeismograms().then( seismogramDataList =&gt; {
+  let graph = document.querySelector('sp-seismograph');
+  graph.seisData = seismogramDataList;
+});
+</code></pre>
+     </div>
+    </section>
+   </div>
+  </div>
+  <script src="./2_bigger.mjs" type="module">
+  </script>
+  <script src="../prism.js">
+  </script>
+  <script>
+   Prism.plugins.NormalizeWhitespace.setDefaults({
+          "remove-trailing": true,
+          "remove-indent": true,
+          "left-trim": true,
+          "right-trim": true
+        });
+  </script>
+ </body>
+</html>

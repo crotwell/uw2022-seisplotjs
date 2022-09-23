@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <title>
+   Seisplotjs Demo (UW 2022)
+  </title>
+  <link href="../bass.css" rel="stylesheet"/>
+  <link href="../split.css" rel="stylesheet"/>
+  <link href="../prism.css" rel="stylesheet"/>
+  <link href="style.css" rel="stylesheet"/>
+  <style>
+   sp-seismograph {
+        height: 300px;
+        width: 1000px;
+      }
+  </style>
+  <script src="./navbar.mjs" type="module">
+  </script>
+ </head>
+ <body>
+  <div class="flex">
+   <div class="overflow-auto fs0 height-viewport-100" id="split-left">
+    <div class="py1 px2">
+     <div id="toc">
+      <nav is="demo-nav">
+      </nav>
+     </div>
+    </div>
+   </div>
+   <div class="relative overflow-auto height-viewport-100" id="split-right">
+    <section class="p2 mb2 clearfix bg-white minishadow">
+     <div class="clearfix">
+      <h3>
+       Seismograph
+      </h3>
+      <div>
+       <sp-seismograph>
+       </sp-seismograph>
+      </div>
+      <pre><code class="language-css">
+                sp-seismograph {
+                  height: 300px;
+                  width: 1000px;
+                }
+            </code></pre>
+      <pre><code class="language-html">
+              &lt;sp-seismograph&gt;&lt;/sp-seismograph&gt;
+            </code></pre>
+      <pre><code class="language-html">
+              &lt;script type="module" src="file.mjs"&gt;
+            </code></pre>
+            <p>Usual import stuff, needs type="module". </p>
+      <pre><code class="language-javascript" snippet="import">
+import * as seisplotjs from '../seisplotjs_3.0.0-alpha.1_standalone.mjs';
+</code></pre>
+            <p>Set up the query parameters.</p>
+      <pre><code class="language-javascript" snippet="setup">
+const queryTimeWindow = new seisplotjs.util.startEnd('2019-07-01', '2019-07-31');
+const donut = new seisplotjs.fdsncommon.LatLonRadius(35, -118, 0, 3);
+const eventQuery = new seisplotjs.fdsnevent.EventQuery()
+  .timeWindow(queryTimeWindow)
+  .minMag(7)
+  .latLonRegion(donut);
+const nslc = new seisplotjs.fdsnsourceid.NslcId('CO', 'HODGE', '00', 'LHZ');
+const stationQuery = new seisplotjs.fdsnstation.StationQuery()
+  .nslcCodes(nslc)
+  .timeWindow(queryTimeWindow);
+const loader = new seisplotjs.seismogramloader.SeismogramLoader(stationQuery, eventQuery);
+// default start is relative to P, end relative to S
+loader.startOffsetSeconds(-300);
+loader.endOffsetSeconds(1200);
+loader.markedPhaseList = "PcP,SS";
+</code></pre>
+            <p>Launch the query, draw the output.</p>
+      <pre><code class="language-javascript" snippet="promise">
+loader.loadSeismograms().then( seismogramDataList =&gt; {
+  let graph = document.querySelector('sp-seismograph');
+  graph.seisData = seismogramDataList;
+});
+</code></pre>
+     </div>
+     <div id="debug">
+     </div>
+    </section>
+   </div>
+  </div>
+  <script src="./2_bigger.mjs" type="module">
+  </script>
+  <script src="../prism.js">
+  </script>
+  <script>
+   Prism.plugins.NormalizeWhitespace.setDefaults({
+          "remove-trailing": true,
+          "remove-indent": true,
+          "left-trim": true,
+          "right-trim": true
+        });
+  </script>
+ </body>
+</html>
