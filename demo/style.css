@@ -1,5 +1,8 @@
 
-
+sp-seismograph {
+  height: 300px;
+  width: 1000px;
+}
 div#messages {
   color: red;
 }

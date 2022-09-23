@@ -1,48 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset='utf-8'>
-    <title>Seisplotjs Demo (UW 2022)</title>
-    <link href="../bass.css" rel="stylesheet"/>
-    <link href="../split.css" rel="stylesheet"/>
-    <link href="../prism.css" rel="stylesheet"/>
-    <link href="style.css" rel="stylesheet"/>
-    <style>
-     sp-organized-display {
+ <head>
+  <meta charset="utf-8"/>
+  <title>
+   Seisplotjs Demo (UW 2022)
+  </title>
+  <link href="../bass.css" rel="stylesheet"/>
+  <link href="../split.css" rel="stylesheet"/>
+  <link href="../prism.css" rel="stylesheet"/>
+  <link href="style.css" rel="stylesheet"/>
+  <style>
+   sp-organized-display {
           width: 1000px;
         }
-    </style>
-    <script type="module" src="./navbar.mjs"></script>
-  </head>
-  <body>
-    <div class="flex">
-      <div id="split-left" class="overflow-auto fs0 height-viewport-100">
-        <div class="py1 px2">
-          <div id="toc">
-            <nav is="demo-nav"></nav>
-          </div>
-        </div>
-      </div>
-      <div id="split-right" class="relative overflow-auto height-viewport-100">
-        <section class="p2 mb2 clearfix bg-white minishadow">
-          <div class="clearfix">
-            <h3>Content</h3>
-            <sp-organized-display map="true" info="true"></sp-organized-display>
-          </div>
-        </section>
-      </div>
+  </style>
+  <script src="./navbar.mjs" type="module">
+  </script>
+ </head>
+ <body>
+  <div class="flex">
+   <div class="overflow-auto fs0 height-viewport-100" id="split-left">
+    <div class="py1 px2">
+     <div id="toc">
+      <nav is="demo-nav">
+      </nav>
+     </div>
     </div>
-    <script src="./3_disporg.mjs" type="module">
-    </script>
-    <script src="../prism.js">
-    </script>
-    <script>
-     Prism.plugins.NormalizeWhitespace.setDefaults({
+   </div>
+   <div class="relative overflow-auto height-viewport-100" id="split-right">
+    <section class="p2 mb2 clearfix bg-white minishadow">
+     <div class="clearfix">
+      <h3>
+       Content
+      </h3>
+      <sp-organized-display align="origin" info="true" map="true" overlay="station" sort="distance">
+      </sp-organized-display>
+     </div>
+     <div id="debug">
+     </div>
+    </section>
+   </div>
+  </div>
+  <script src="./3_disporg.mjs" type="module">
+  </script>
+  <script src="../prism.js">
+  </script>
+  <script>
+   Prism.plugins.NormalizeWhitespace.setDefaults({
           "remove-trailing": true,
           "remove-indent": true,
           "left-trim": true,
           "right-trim": true
         });
-    </script>
-  </body>
+  </script>
+ </body>
 </html>
